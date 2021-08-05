@@ -1,0 +1,33 @@
+version: "2.4"
+services:
+    # For configuration help
+    # https://docs.confluent.io/platform/current/installation/docker/config-reference.html#confluent-ak-configuration 
+    zookeper:
+        image: confluentinc/cp-zookeeper:6.2.0
+        container_name: zookeper    
+        ports: 
+            - "2181:2181"
+        environment:
+            ZOOKEEPER_CLIENT_PORT: 2181
+            ZOOKEEPER_TICK_TIME: 200
+    kafka_cluster:
+        image: confluentinc/cp-kafka:6.2.0
+        container_name: kafka-cluster
+        ports: 
+            - "9092:9092"
+        depends_on: 
+            - zookeper
+        environment:
+            KAFKA_ZOOKEEPER_CONNECT: zookeper:2181
+            KAFKA_BROKER_ID: 1
+            KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092
+            KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+    kafka_manager:
+        image: kafkamanager/kafka-manager:3.0.0.4
+        container_name: kafka-manager
+        ports:
+            - "9000:9000"
+        depends_on:
+            - kafka_cluster
+        environment:
+            ZK_HOSTS: zookeper:2181

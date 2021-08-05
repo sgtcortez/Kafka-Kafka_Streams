@@ -1,0 +1,12 @@
+package br.com.techtalk;
+
+import lombok.Data;
+
+@Data
+public class Customer {
+
+    private Long id;
+    private String name;
+    private String email;
+
+}
