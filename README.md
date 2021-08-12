@@ -198,6 +198,8 @@ Por exemplo, conseguimos juntar dois tópicos distintos, e transformar em um tó
 
     Diferentemente de um consumer normal, em uma aplicação com Kafka Streams, todos os tópicos de entrada, **precisam ter o mesmo número de partições**. Isso porque, você não conseguirá fazer nenhum join se o TOPICO X tem 3 partições, com o tópico Y que tem 12 partições. Lembra que o join é feito por chaves? 
 
+    Estas restrições se aplicam para KStream e KTable. GlobalTable não se aplica!
+
 # Termos 
 Alguns termos que são utilizados nas documentações.
 

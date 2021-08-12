@@ -40,5 +40,5 @@ services:
         depends_on:
             - kafka_cluster
         environment:
-            ZK_HOSTS: zookeper:2181
+            ZK_HOSTS: localhost:2181
         network_mode: host
