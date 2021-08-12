@@ -18,6 +18,7 @@
     + [Limitações](#Limitações)
 - [Termos](#Termos)
 - [Referências](#Referências)
+- [Projeto Demo](#Projeto-Demo)
 - [Comandos Úteis](#Comandos-Úteis)
 
 # Introdução ao Kafka
@@ -218,6 +219,22 @@ Alguns termos que são utilizados nas documentações.
 - [Apache Kafka Streams](https://kafka.apache.org/28/documentation/streams/)
 - [Confluent Apache Kafka Streams Introduction](https://www.confluent.io/blog/kafka-streams-tables-part-1-event-streaming/)
 - [Streams Joins Confluent](https://www.confluent.io/blog/crossing-streams-joins-apache-kafka/)
+
+# Projeto Demo
+O projeto consiste em uma demonstração do poder de Kafka Streams ...
+
+Temos duas **KTables**, uma para o tópico *CUSTOMER* e outra para o tópico *CUSTOMER_ADDRESS*.   
+Qualquer evento que chegar nestes tópicos, irá disparar o gatilho de join(inner join) entre elas, e produzir o dado atualizado para uma tabela que o Kafka Streams mantém internamente.    
+
+Um **KStream** para o tópico pedidos, no qual, consiste em pedidos realizados.  
+Essa **KStream** faz um join(inner join) com a tabela de CUSTOMER(já com o join entre elas). Essa KStream dispara o gatilho do join. Qualquer entrada nela, disparará o join!
+
+Uma **GlobalKTable**(pois, este tópico só tem uma partição) para o tópico de itens.    
+
+Para executar o projeto, basta rodar: 
+```bash
+./init.sh
+```
 
 # Comandos Úteis
 Inserir a localização do Kafka(scripts para se comunicar) na variável: KAFKA_PATH.   
