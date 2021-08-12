@@ -4,40 +4,63 @@
 package br.com.techtalk;
 
 import lombok.extern.slf4j.Slf4j;
+import org.apache.kafka.clients.admin.AdminClient;
+import org.apache.kafka.clients.admin.NewTopic;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
+import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.streams.KafkaStreams;
 import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.StreamsConfig;
 
+import java.util.List;
 import java.util.Properties;
 import java.util.concurrent.CountDownLatch;
 
 @Slf4j
 public class App {
 
-    private static final String KAFKA_HOST = "localhost:9092";
-
     private static Properties streamProperties() {
         final var properties = new Properties();
         // this will be the consumer id
         properties.put(StreamsConfig.APPLICATION_ID_CONFIG, "tech-talk");
-        properties.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, KAFKA_HOST);
+        properties.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
         properties.put(StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG, Serdes.String().getClass());
         properties.put(StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG, Serdes.String().getClass());
+        properties.put(ConsumerConfig.ALLOW_AUTO_CREATE_TOPICS_CONFIG, "true");
         properties.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
         return properties;
     }
 
+    private static void createTopics () {
+
+        final var properties = new Properties();
+
+        properties.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
+
+        final var topics = List.of(
+                new NewTopic("ORDER", 3 , (short)1),
+                new NewTopic("ITEM", 1 , (short)1), // just one partition because we will have a global table
+                new NewTopic("ORDER-MAIL", 3 , (short)1),
+                new NewTopic("CUSTOMER", 3 , (short)1),
+                new NewTopic("CUSTOMER-ADDRESS", 3 , (short)1)
+        );
+
+        try (final var admin = AdminClient.create(properties)) {
+            admin.createTopics(topics);
+        }
+    }
 
     public static void main(String[] args) {
 
         final var builder = new StreamsBuilder();
 
+        final var properties = streamProperties();
+        createTopics();
         new StreamApplication(builder);
 
         final var topology = builder.build();
-        final var streams = new KafkaStreams(topology, streamProperties());
+        final var streams = new KafkaStreams(topology, properties);
 
         // Clean local state stores everytime that the application starts
         // usually in /tmp/kafka-streams

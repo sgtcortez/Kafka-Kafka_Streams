@@ -55,7 +55,6 @@ task fatJar(type: Jar) {
         	'Implementation-Version': '1.0',
         	'Main-Class': 'br.com.techtalk.App'
     }
-    baseName = project.name
     from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
     with jar
 }
