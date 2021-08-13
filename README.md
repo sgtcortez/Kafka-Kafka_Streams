@@ -223,13 +223,17 @@ Alguns termos que são utilizados nas documentações.
 # Projeto Demo
 O projeto consiste em uma demonstração do poder de Kafka Streams ...
 
-Temos duas **KTables**, uma para o tópico *CUSTOMER* e outra para o tópico *CUSTOMER_ADDRESS*.   
-Qualquer evento que chegar nestes tópicos, irá disparar o gatilho de join(inner join) entre elas, e produzir o dado atualizado para uma tabela que o Kafka Streams mantém internamente.    
+Temos duas **KTables**, uma para o tópico *CUSTOMER* e outra para o tópico *CUSTOMER-ADDRESS*.   
+Qualquer evento que chega nestes tópicos, irá disparar o gatilho de join(inner join) entre elas, e produzir o dado atualizado para uma tabela que o Kafka Streams mantém internamente.    
 
-Um **KStream** para o tópico pedidos, no qual, consiste em pedidos realizados.  
+Um **KStream** para o tópico **ORDER**, no qual, consiste em pedidos realizados.  
 Essa **KStream** faz um join(inner join) com a tabela de CUSTOMER(já com o join entre elas). Essa KStream dispara o gatilho do join. Qualquer entrada nela, disparará o join!
 
-Uma **GlobalKTable**(pois, este tópico só tem uma partição) para o tópico de itens.    
+Uma **GlobalKTable**(pois, este tópico só tem uma partição) para o tópico **ITEM**.
+
+Ao ser feito um novo pedido, iremos pegar o campo customerId do pedido, fazer um join com a tabela derivada do join entre **CUSTOMER** e **CUSTOMER-ADDRESS**, e com o campo itemId, iremos fazer um join com a GlobalKTable de itens.   
+Apos isso, o resultado sera enviado para o topico **ORDER-MAIL**, no qual, poderia enviar um e-mail para o cliente. 
+
 
 Para executar o projeto, basta rodar: 
 ```bash
