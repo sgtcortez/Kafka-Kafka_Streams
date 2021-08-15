@@ -1,4 +1,5 @@
 # Sumário
+- [Sobre](#Sobre)   
 - [Introdução ao Kafka](#Introdução-ao-Kafka)
     + [Arquitetura](#Arquitetura)
     + [Conceitos Principais](#Conceitos-Principais)
@@ -20,6 +21,10 @@
 - [Referências](#Referências)
 - [Projeto Demo](#Projeto-Demo)
 - [Comandos Úteis](#Comandos-Úteis)
+
+# Sobre
+Este projeto faz parte de uma apresentação que fiz para a equipde de TI do [Grupo Dimed](http://www.grupodimed.com.br/) no dia 12-08-2021.    
+Fica aqui o meu agradecimento ao pessoal da Dimed pela oportunidade.   
 
 # Introdução ao Kafka
 Kafka é uma plataforma de streaming de eventos que pode ser utilizada em inúmeros cenários, desde sensores, IOT, confirmação de pagamentos e etc.     
